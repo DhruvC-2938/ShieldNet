@@ -1,6 +1,7 @@
 #include <iostream>
-#include <vector>
+#include <queue>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -10,14 +11,21 @@ struct Alert
     int severity;
 };
 
+struct CompareAlert
+{
+    bool operator()(Alert a, Alert b)
+    {
+        return a.severity < b.severity;
+    }
+};
+
 class DangerSorter
 {
 private:
-    vector<Alert> alerts;
-
-    void merge(int left, int mid, int right);
-
-    void mergeSort(int left, int right);
+    priority_queue<
+        Alert,
+        vector<Alert>,
+        CompareAlert> alerts;
 
 public:
     DangerSorter();
@@ -25,8 +33,6 @@ public:
     void loadSampleData();
 
     void addAlert();
-
-    void sortAlerts();
 
     void displayAlerts();
 

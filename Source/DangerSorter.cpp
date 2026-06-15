@@ -3,154 +3,119 @@
 DangerSorter::DangerSorter()
 {
 }
+
 void DangerSorter::loadSampleData()
 {
-	alerts.push_back({"Failed Login", 5});
-	alerts.push_back({"Port Scan", 3});
-	alerts.push_back({"Data Breach", 10});
-	alerts.push_back({"Ransomware", 9});
+alerts.push({"Failed Login", 5});
+alerts.push({"Port Scan", 3});
+alerts.push({"Data Breach", 10});
+alerts.push({"Ransomware", 9});
 }
+
 void DangerSorter::addAlert()
 {
-	Alert alert;
+Alert alert;
 
-	cin.ignore(1000, '\n');
 
-	cout << "\nEnter Alert Message: ";
-	getline(cin, alert.message);
+cin.ignore(1000, '\n');
 
-	cout << "Enter Severity: ";
-	cin >> alert.severity;
-	if (cin.fail())
-	{
-		cin.clear();
-		cin.ignore(1000, '\n');
+cout << "\nEnter Alert Message: ";
+getline(cin, alert.message);
 
-		cout << "\nInvalid Severity!\n";
-		return;
-	}
+cout << "Enter Severity: ";
+cin >> alert.severity;
 
-	alerts.push_back(alert);
+if(cin.fail())
+{
+    cin.clear();
+    cin.ignore(1000, '\n');
 
-	cout << "Alert Added Successfully!\n";
+    cout << "\nInvalid Severity!\n";
+    return;
 }
+
+alerts.push(alert);
+
+cout << "Alert Added Successfully!\n";
+
+}
+
 void DangerSorter::displayAlerts()
 {
-	if (alerts.empty())
-	{
-		cout << "\nNo Alerts Available!\n";
-		return;
-	}
-	cout << "\n===== Alerts =====\n";
-	for (const Alert &alert : alerts)
-	{
-		cout << alert.message
-			 << " | Severity: "
-			 << alert.severity
-			 << endl;
-	}
-}
-void DangerSorter::merge(int left, int mid, int right)
+if(alerts.empty())
 {
-	vector<Alert> temp;
-	int i = left;
-	int j = mid + 1;
-	while (i <= mid && j <= right)
-	{
-		if (alerts[i].severity > alerts[j].severity)
-		{
-			temp.push_back(alerts[i]);
-			i++;
-		}
-		else
-		{
-			temp.push_back(alerts[j]);
-			j++;
-		}
-	}
-	while (i <= mid)
-	{
-		temp.push_back(alerts[i]);
-		i++;
-	}
-	while (j <= right)
-	{
-		temp.push_back(alerts[j]);
-		j++;
-	}
-	for (int k = left; k <= right; k++)
-	{
-		alerts[k] = temp[k - left];
-	}
+cout << "\nNo Alerts Available!\n";
+return;
 }
-void DangerSorter::mergeSort(int left, int right)
-{
-	if (left >= right)
-	{
-		return;
-	}
-	int mid = (left + right) / 2;
-	mergeSort(left, mid);
-	mergeSort(mid + 1, right);
-	merge(left, mid, right);
-}
-void DangerSorter::sortAlerts()
-{
-	if (alerts.empty())
-	{
-		cout << "\nNo Alerts To Sort!\n";
-		return;
-	}
 
-	mergeSort(0, alerts.size() - 1);
+priority_queue<
+    Alert,
+    vector<Alert>,
+    CompareAlert> temp = alerts;
 
-	cout << "\nAlerts Sorted Successfully!\n";
+cout << "\n===== Alerts By Priority =====\n";
+
+while(!temp.empty())
+{
+    Alert current = temp.top();
+
+    cout
+        << current.message
+        << " | Severity: "
+        << current.severity
+        << endl;
+
+    temp.pop();
 }
+
+
+}
+
 void DangerSorter::menu()
 {
-	int choice;
+int choice;
 
-	do
-	{
-		cout << "\n===== Danger Sorter =====\n";
-		cout << "1. Add Alert\n";
-		cout << "2. Sort Alerts\n";
-		cout << "3. Display Alerts\n";
-		cout << "4. Back\n";
 
-		cout << "\nEnter Choice: ";
-		cin >> choice;
-		if (cin.fail())
-		{
-			cin.clear();
-			cin.ignore(1000, '\n');
+do
+{
+    cout << "\n===== Danger Sorter =====\n";
 
-			cout << "\nInvalid Input!\n";
+    cout << "1. Add Alert\n";
+    cout << "2. Display Alerts By Priority\n";
+    cout << "3. Back\n";
 
-			continue;
-		}
+    cout << "\nEnter Choice: ";
 
-		switch (choice)
-		{
-		case 1:
-			addAlert();
-			break;
+    cin >> choice;
 
-		case 2:
-			sortAlerts();
-			break;
+    if(cin.fail())
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
 
-		case 3:
-			displayAlerts();
-			break;
+        cout << "\nInvalid Input!\n";
 
-		case 4:
-			cout << "\nReturning To Main Menu...\n";
-			break;
+        continue;
+    }
 
-		default:
-			cout << "\nInvalid Choice!\n";
-		}
+    switch(choice)
+    {
+        case 1:
+            addAlert();
+            break;
 
-	} while (choice != 4);
+        case 2:
+            displayAlerts();
+            break;
+
+        case 3:
+            cout << "\nReturning To Main Menu...\n";
+            break;
+
+        default:
+            cout << "\nInvalid Choice!\n";
+    }
+
+} while(choice != 3);
+
 }
