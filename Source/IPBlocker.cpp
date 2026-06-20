@@ -10,6 +10,10 @@ void IPBlocker::loadSampleData()
 	blockedIPs.push_back("192.168.1.25");
 	blockedIPs.push_back("192.168.1.50");
 	blockedIPs.push_back("192.168.1.100");
+	blockedIPs.push_back("192.168.1.75");
+	blockedIPs.push_back("192.168.1.93");
+	blockedIPs.push_back("192.168.1.67");
+	
 
 	sort(blockedIPs.begin(), blockedIPs.end());
 }
